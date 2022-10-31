@@ -1,32 +1,31 @@
 //! Rust bindings to the REST api, built on a simple Request client.
 
-use reqwest::Client;
-use thiserror::Error;
-use serde::{Deserialize, Serialize};
-
 use crate::model::contact_info::ContactInfo;
 
-#[derive(Error, Debug)]
-pub enum ResumeApiError {
-    
-    #[error("Error performing request")]
-    ReqwestErr,
-
-    #[error("Error parsing response")]
-    ParseErr
-}
-
-pub type ResumeApiResult<T> = Result<T, ResumeApiError>;
-
-fn client() -> Client {
-    Client::new()
-}
+pub type ResumeApiResult<T> = Result<T, reqwest::Error>;
 
 pub async fn contact_info() -> ResumeApiResult<ContactInfo> {
-    let resp = reqwest::get("https://ben_peinhardt_resume_api.shuttleapp.rs/contact_info")
-        .await.map_err(|_| ResumeApiError::ReqwestErr)?
+    let resp = reqwest::get("https://hello_world.shuttleapp.rs/hello")
+        .await?
         .json()
-        .await.map_err(|_| ResumeApiError::ParseErr)?;
+        .await?;
     Ok(resp)
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn test_contact_info() {
+
+        let info = ContactInfo {
+            name: "Benjamin Peinhardt".to_owned(),
+            email: "benjaminpeinhardt@gmail.com".to_owned(),
+            phone: "2056410594".to_owned(),
+            github_handle: "bcpeinhardt".to_owned(),
+        };
+
+        assert_eq!(contact_info().await.unwrap(), info);
+    }
+}
