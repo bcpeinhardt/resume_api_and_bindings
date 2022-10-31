@@ -11,21 +11,3 @@ pub async fn contact_info() -> ResumeApiResult<ContactInfo> {
         .await?;
     Ok(resp)
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[tokio::test]
-    async fn test_contact_info() {
-
-        let info = ContactInfo {
-            name: "Benjamin Peinhardt".to_owned(),
-            email: "benjaminpeinhardt@gmail.com".to_owned(),
-            phone: "2056410594".to_owned(),
-            github_handle: "bcpeinhardt".to_owned(),
-        };
-
-        assert_eq!(contact_info().await.unwrap(), info);
-    }
-}
