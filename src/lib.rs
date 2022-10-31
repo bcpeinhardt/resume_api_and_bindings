@@ -3,13 +3,14 @@ use model::contact_info::ContactInfo;
 use sync_wrapper::SyncWrapper;
 
 mod model;
+pub mod bindings;
 
 async fn contact_info() -> impl IntoResponse {
     let info = ContactInfo {
-        name: "Benjamin Peinhardt",
-        email: "benjaminpeinhardt@gmail.com",
-        phone: "2056410594",
-        github_handle: "bcpeinhardt",
+        name: "Benjamin Peinhardt".to_owned(),
+        email: "benjaminpeinhardt@gmail.com".to_owned(),
+        phone: "2056410594".to_owned(),
+        github_handle: "bcpeinhardt".to_owned(),
     };
 
     (StatusCode::OK, Json(info))
